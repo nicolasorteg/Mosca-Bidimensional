@@ -65,35 +65,39 @@ Main {
     writeLine("Fin del programa.");
 }
 
-
+/*
+Gestiona el menú principal de la simulación. Se repite hasta que el usuario decida acabar con esta seleccionando salir
+*/
 procedure ejecutarMenuPrincipal() {
     // variable que almacena la opcion que elige el usuario del menú, inicializada al 0 para prevenir errores y garantizar la entrada
     int opcionElegida = 0;
 
     do {
 
+        // menú
         writeLine("---- MENÚ PRINCIPAL ----");
         writeLine(OPCION_MENU_PRINCIPAL_JUGAR + ".- Entrar al juego 👾"); // 1
         writeLine(OPCION_MENU_PRINCIPAL_COMO_JUGAR + ".- ¿Cómo se juega? 🤷‍♀️"); // 2
         writeLine(OPCION_MENU_PRINCIPAL_SALIR + ".- Salir 😔"); // 3
 
-        opcionElegida = leerEntero("Opción elegida: ");
+        // 1a capa de validación: que no se introduzca texto
+        opcionElegida = leerEntero("Opción elegida: "); 
         writeLine("--------------------");
 
         switch(opcionElegida) {
-            case OPCION_MENU_PRINCIPAL_JUGAR:
+            case OPCION_MENU_PRINCIPAL_JUGAR: // 1
                 seleccionarDificultad();
                 break;
 
-            case OPCION_MENU_PRINCIPAL_ESTADISTICAS:
+            case OPCION_MENU_PRINCIPAL_ESTADISTICAS: // 2
                 mostrarEstadisticas(victorias);
                 break; 
 
-            case OPCION_MENU_PRINCIPAL_SALIR:
+            case OPCION_MENU_PRINCIPAL_SALIR: // 3
                 writeLine("Ha sido un placer 😉");
                 break;
 
-            default;
+            default; // 2a capa de validación: que se introduzca una opción posible
                 writeLine("❌ Opción introducida no válida. Introduzca una de las " + OPCION_MENU_PRINCIPAL_SALIR + " opciones posibles.");
                 break;
         }
@@ -101,8 +105,43 @@ procedure ejecutarMenuPrincipal() {
 }
 
 
+/*
+Se encarga de imprimir el Menu para seleccionar la dificultad del juego, además de la opción de mostrar las stats de la sesión
+*/
+procedure seleccionarDificultad() {
+
+    // variables que almacenaran los datos que se mostraran en las estadísticas
+    int victoriasFacil = VICTORIAS_INICIALES;
+    int victoriasMedio = VICTORIAS_INICIALES;
+    int victoriasDificil = VICTORIAS_INICIALES;
+    int victoriasMaestro = VICTORIAS_INICIALES;
+    int victoriasImposible = VICTORIAS_INICIALES;
+
+    int numeroPartidasFacil = PARTIDAS_INICIALES;
+    int numeroPartidasMedio = PARTIDAS_INICIALES;
+    int numeroPartidasDificil = PARTIDAS_INICIALES;
+    int numeroPartidassMaestro = PARTIDAS_INICIALES;
+    int numeroPartidasImposible = PARTIDAS_INICIALES;
+
+    int intentosTotalesFacil = INTENTOS_INICIALES;
+    int intentosTotalesMedio = INTENTOS_INICIALES;
+    int intentosTotalesDificil = INTENTOS_INICIALES;
+    int intentosTotalesMaestro = INTENTOS_INICIALES;
+    int intentosTotalesImposible = INTENTOS_INICIALES;
+
+    // menú
+    writeLine("---- SELECTOR DE DIFICULTAD ----");
+    writeLine(OPCION_MENU_JUEGO_FACIL + ".- Fácil 😊");
+    writeLine(OPCION_MENU_JUEGO_MEDIO + ".- Medio 🤔");
+    writeLine(OPCION_MENU_JUEGO_DIFICIL + ".- Difícil 😨");
+    writeLine(OPCION_MENU_JUEGO_MAESTRO + ".- Maestro 👺");
+    writeLine(OPCION_MENU_JUEGO_IMPOSIBLE + ".- Imposible 💀");
+    writeLine(OPCION_MENU_JUEGO_ESTADISTICAS + ".- Mostrar estadísticas 📊");
+    writeLine(OPCION_MENU_JUEGO_SALIR + ".- Volver al menú.");
 
 
+
+}
 
 
 
