@@ -147,61 +147,76 @@ procedure seleccionarDificultad() {
         opcionElegida = leerEntero("Opción elegida: "); 
         writeLine("---------------------");
 
-        // se llama a la respectiva funcion que simula cada dificultad. se le pasa por ref los datos para poder modificarlos y actualizar las stats
-        // para desbloquear una dificultad se requiere al menos 1 win en las anteriores, para ello se usan los 'if' que no permiten la simulacion si no se cumple esto
-        switch (opcionElegida) {
+        // al ser un switch que solo llama a la funcion en caso de que haya ganado en la dificultad anterior se extrae a otra funcion para cumplir el Principio de Responsabilidad Única.
+        gestionarDificultad(opcionElegida);
 
-            case OPCION_MENU_JUEGO_FACIL: // 1
-                simularPartidaFacil(ref victoriasFacil, ref numeroPartidasFacil, ref intentosTotalesFacil);
-                break;
-
-            case OPCION_MENU_JUEGO_MEDIO: // 2
-                if (victoriasFacil >= 1) { // si ha ganado en la difultad anterior
-                    simularPartidaMedio(ref victoriasMedio, ref numeroPartidasMedio, ref intentosTotalesMedio);
-                } else {
-                    writeLine("⛓ Dificultad bloqueada. Necesitas ganar el la dificultad 'Fácil' primero.");
-                }
-                break;
-
-            case OPCION_MENU_JUEGO_DIFICIL: // 3
-                if (victoriasMedio >= 1) { // si ha ganado en la difultad anterior
-                    simularPartidaDificil(ref victoriasDificil, ref numeroPartidasDificil, ref intentosTotalesDificil);
-                } else {
-                    writeLine("⛓ Dificultad bloqueada. Necesitas ganar el la dificultad 'Medio' primero.");
-                }
-                break;
-
-            case OPCION_MENU_JUEGO_MAESTRO: // 4
-                if (victoriasDificil >= 1) { // si ha ganado en la difultad anterior
-                    simularPartidaMaestro(ref victoriasMaestro, ref numeroPartidasMaestro, ref intentosTotalesMaestro);
-                } else {
-                    writeLine("⛓ Dificultad bloqueada. Necesitas ganar el la dificultad 'Dificil' primero.");
-                }
-                break;
-
-            case OPCION_MENU_JUEGO_IMPOSIBLE: // 5
-                if (victoriasMaestro >= 1) { // si ha ganado en la difultad anterior
-                    simularPartidaImposible(ref victoriasImposible, ref numeroPartidasImposible, ref intentosTotalesImposible);
-                } else {
-                    writeLine("⛓ Dificultad bloqueada. Necesitas ganar el la dificultad 'Maestro' primero.");
-                }
-                break;
-
-            case OPCION_MENU_JUEGO_ESTADISTICAS: // 6
-                mostrarEstadisticas(ref victoriasFacil, ref numeroPartidasFacil, ref intentosTotalesFacil, ref victoriasMedio, ref numeroPartidasMedio, ref intentosTotalesMedio, ref victoriasDificil, ref numeroPartidasDificil, ref intentosTotalesDificil, ref victoriasMaestro, ref numeroPartidasMaestro, ref intentosTotalesMaestro, ref victoriasImposible, ref numeroPartidasImposible, ref intentosTotalesImposible);
-                break;
-
-            case OPCION_MENU_JUEGO_SALIR: // 7
-                writeLine("Volviendo al Menú Principal...");
-                break;
-
-            default: // 2a capa de validación: que se introduzca una opción posible
-                writeLine("❌ Opción introducida no válida. Introduzca una de las " + OPCION_MENU_JUEGO_SALIR + " opciones posibles.");
-                break;
-        }
     } while (opcionElegida != OPCION_MENU_JUEGO_SALIR); // se repite siempre y cuando NO se pulse la opción que sale del selector de dificultad 
 }
 
+/*
+Se encarga de llamar a la partida de su respectiva dificultad. 
+Se podría hacer dentro de 'seleccionarDificultad', pero como dentro del switch hay que validar las victorias anteriores queda muy grande y no cumpliría del todo el Principio de Responsabilidad Única.
+Se le pasa por valor la opción que elige el usuario.
+*/
+procedure gestionarDificultad(int opcionElegida) {
+
+    // se llama a la respectiva funcion que simula cada dificultad. se le pasa por ref los datos para poder modificarlos y actualizar las stats
+    // para desbloquear una dificultad se requiere al menos 1 win en las anteriores, para ello se usan los 'if' que no permiten la simulacion si no se cumple esto
+    switch (opcionElegida) {
+
+        case OPCION_MENU_JUEGO_FACIL: // 1
+            simularPartidaFacil(ref victoriasFacil, ref numeroPartidasFacil, ref intentosTotalesFacil);
+            break;
+
+        case OPCION_MENU_JUEGO_MEDIO: // 2
+            if (victoriasFacil >= 1) { // si ha ganado en la difultad anterior
+                simularPartidaMedio(ref victoriasMedio, ref numeroPartidasMedio, ref intentosTotalesMedio);
+            } else {
+                writeLine("⛓ Dificultad bloqueada. Necesitas ganar el la dificultad 'Fácil' primero.");
+            }
+            break;
+
+        case OPCION_MENU_JUEGO_DIFICIL: // 3
+            if (victoriasMedio >= 1) { // si ha ganado en la difultad anterior
+                simularPartidaDificil(ref victoriasDificil, ref numeroPartidasDificil, ref intentosTotalesDificil);
+            } else {
+                writeLine("⛓ Dificultad bloqueada. Necesitas ganar el la dificultad 'Medio' primero.");
+            }
+            break;
+
+        case OPCION_MENU_JUEGO_MAESTRO: // 4
+            if (victoriasDificil >= 1) { // si ha ganado en la difultad anterior
+                simularPartidaMaestro(ref victoriasMaestro, ref numeroPartidasMaestro, ref intentosTotalesMaestro);
+            } else {
+                writeLine("⛓ Dificultad bloqueada. Necesitas ganar el la dificultad 'Dificil' primero.");
+            }
+            break;
+
+        case OPCION_MENU_JUEGO_IMPOSIBLE: // 5
+            if (victoriasMaestro >= 1) { // si ha ganado en la difultad anterior
+                simularPartidaImposible(ref victoriasImposible, ref numeroPartidasImposible, ref intentosTotalesImposible);
+            } else {
+                writeLine("⛓ Dificultad bloqueada. Necesitas ganar el la dificultad 'Maestro' primero.");
+            }
+            break;
+
+        case OPCION_MENU_JUEGO_ESTADISTICAS: // 6
+            mostrarEstadisticas(ref victoriasFacil, ref numeroPartidasFacil, ref intentosTotalesFacil, 
+                                ref victoriasMedio, ref numeroPartidasMedio, ref intentosTotalesMedio, 
+                                ref victoriasDificil, ref numeroPartidasDificil, ref intentosTotalesDificil,
+                                ref victoriasMaestro, ref numeroPartidasMaestro, ref intentosTotalesMaestro, 
+                                ref victoriasImposible, ref numeroPartidasImposible, ref intentosTotalesImposible);
+            break;
+
+        case OPCION_MENU_JUEGO_SALIR: // 7
+            writeLine("Volviendo al Menú Principal...");
+            break;
+
+        default: // 2a capa de validación: que se introduzca una opción posible
+            writeLine("❌ Opción introducida no válida. Introduzca una de las " + OPCION_MENU_JUEGO_SALIR + " opciones posibles.");
+            break;
+    }
+}
 
 
 
