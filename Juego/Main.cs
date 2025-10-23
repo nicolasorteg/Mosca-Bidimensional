@@ -208,31 +208,40 @@ procedure seleccionarDificultad() {
 
 procedure simularPartidaFacil(ref int victoriasFacil, ref int numeroPartidasFacil, ref int intentosTotalesFacil) {
 
-
+    // creacion del tablero, matriz rellena de 0
+    int [][] panelJuego = int[FILAS_PANEL_FACIL][COLUMNAS_PANEL_FACIL];
 
 
 }
 
 procedure simularPartidaMedio(ref int victoriasMedio, ref int numeroPartidasMedio, ref int intentosTotalesMedio) {
     
+    // creacion del tablero, matriz rellena de 0
+    int [][] panelJuego = int[FILAS_PANEL_MEDIO][COLUMNAS_PANEL_MEDIO];
 
 
 }
 
 procedure simularPartidaDificil(ref int victoriasDificil, ref int numeroPartidasDificil, ref int intentosTotalesDificil) {
-    
+
+    // creacion del tablero, matriz rellena de 0
+    int [][] panelJuego = int[FILAS_PANEL_DIFICIL][COLUMNAS_PANEL_d];
 
 
 }
 
 procedure simularPartidaMaestro(ref int victoriasMaestro, ref int numeroPartidasMaestro, ref int intentosTotalesMaestro) {
-    
+
+    // creacion del tablero, matriz rellena de 0
+    int [][] panelJuego = int[FILAS_PANEL_MAESTRO][COLUMNAS_PANEL_MAESTRO];
 
 
 }
 
 procedure simularPartidaFacil(ref int victoriasFacil, ref int numeroPartidasFacil, ref int intentosTotalesFacil) {
-    
+
+    // creacion del tablero, matriz rellena de 0
+    int [][] panelJuego = int[FILAS_PANEL_IMPOSIBLE][COLUMNAS_PANEL_IMPOSIBLE];
 
 
 }
@@ -240,7 +249,7 @@ procedure simularPartidaFacil(ref int victoriasFacil, ref int numeroPartidasFaci
 
 
 procedure mostrarInstrucciones() {
-    
+    writeLine("...");
 }
 
 
