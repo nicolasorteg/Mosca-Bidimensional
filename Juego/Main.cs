@@ -60,6 +60,29 @@ Main {
 }
 
 
+procedure ejecutarMenuPrincipal() {
+    // variable que almacena la opcion que elige el usuario del menú, inicializada al 0 para prevenir errores y garantizar la entrada
+    int opcionElegida = 0;
 
+    do {
+
+        writeLine("---- MENÚ PRINCIPAL ----");
+        writeLine(OPCION_MENU_PRINCIPAL_JUGAR + ".- Jugar 👾"); // 1
+        writeLine(OPCION_MENU_PRINCIPAL_ESTADISTICAS + ".- Mostrar estadísticas 📊"); // 2
+        writeLine(OPCION_MENU_PRINCIPAL_COMO_JUGAR + ".- ¿Cómo se juega? 🤷‍♀️"); // 3
+        writeLine(OPCION_MENU_PRINCIPAL_SALIR + ".- Salir 😔"); // 4
+
+        opcionElegida = leerEntero("Opción elegida: ");
+        writeLine("--------------------");
+
+
+
+
+
+
+
+        
+    } while (opcionElegida != OPCION_MENU_PRINCIPAL_SALIR); // se repite siempre y cuando NO se pulse la opción que sale del programa
+}
     
 
