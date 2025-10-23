@@ -50,3 +50,16 @@ const decimal PROBABILIDAD_PROTECCION_MAESTRO = 0.15; // 15%
 const decimal PROBABILIDAD_PROTECCION_IMPOSIBLE = 0.50; // 50%
 
 
+/*
+Función Main. Es por donde se empieza a ejecutar el programa y se encarga de dar la bienvenida.
+Después de la bienvenida comienza la simulación, empezando por el menú principal del juego.
+*/
+Main {
+    writeLine("--🦟 Bienvenid@ al Minijuego de la Mosca 🦟--");
+    ejecutarMenuPrincipal();
+}
+
+
+
+    
+
