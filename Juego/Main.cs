@@ -156,7 +156,7 @@ procedure seleccionarDificultad() {
                 break;
 
             case OPCION_MENU_JUEGO_MEDIO: // 2
-                if (victoriasFacil >= 1) { 
+                if (victoriasFacil >= 1) { // si ha ganado en la difultad anterior
                     simularPartidaMedio(ref victoriasMedio, ref numeroPartidasMedio, ref intentosTotalesMedio);
                 } else {
                     writeLine("⛓ Dificultad bloqueada. Necesitas ganar el la dificultad 'Fácil' primero.");
@@ -164,7 +164,7 @@ procedure seleccionarDificultad() {
                 break;
 
             case OPCION_MENU_JUEGO_DIFICIL: // 3
-                if (victoriasMedio >= 1) {
+                if (victoriasMedio >= 1) { // si ha ganado en la difultad anterior
                     simularPartidaDificil(ref victoriasDificil, ref numeroPartidasDificil, ref intentosTotalesDificil);
                 } else {
                     writeLine("⛓ Dificultad bloqueada. Necesitas ganar el la dificultad 'Medio' primero.");
@@ -172,7 +172,7 @@ procedure seleccionarDificultad() {
                 break;
 
             case OPCION_MENU_JUEGO_MAESTRO: // 4
-                if (victoriasDificil >= 1) {
+                if (victoriasDificil >= 1) { // si ha ganado en la difultad anterior
                     simularPartidaMaestro(ref victoriasMaestro, ref numeroPartidasMaestro, ref intentosTotalesMaestro);
                 } else {
                     writeLine("⛓ Dificultad bloqueada. Necesitas ganar el la dificultad 'Dificil' primero.");
@@ -180,7 +180,7 @@ procedure seleccionarDificultad() {
                 break;
 
             case OPCION_MENU_JUEGO_IMPOSIBLE: // 5
-                if (victoriasMaestro >= 1) {
+                if (victoriasMaestro >= 1) { // si ha ganado en la difultad anterior
                     simularPartidaImposible(ref victoriasImposible, ref numeroPartidasImposible, ref intentosTotalesImposible);
                 } else {
                     writeLine("⛓ Dificultad bloqueada. Necesitas ganar el la dificultad 'Maestro' primero.");
@@ -204,6 +204,44 @@ procedure seleccionarDificultad() {
 
 
 
+
+
+procedure simularPartidaFacil(ref int victoriasFacil, ref int numeroPartidasFacil, ref int intentosTotalesFacil) {
+
+
+
+
+}
+
+procedure simularPartidaMedio(ref int victoriasMedio, ref int numeroPartidasMedio, ref int intentosTotalesMedio) {
+    
+
+
+}
+
+procedure simularPartidaDificil(ref int victoriasDificil, ref int numeroPartidasDificil, ref int intentosTotalesDificil) {
+    
+
+
+}
+
+procedure simularPartidaMaestro(ref int victoriasMaestro, ref int numeroPartidasMaestro, ref int intentosTotalesMaestro) {
+    
+
+
+}
+
+procedure simularPartidaFacil(ref int victoriasFacil, ref int numeroPartidasFacil, ref int intentosTotalesFacil) {
+    
+
+
+}
+
+
+
+procedure mostrarInstrucciones() {
+    
+}
 
 
 
