@@ -7,7 +7,7 @@ El juego de la Mosca es un minijuego que consiste en intentar cazar una mosca qu
 - **Falla el golpeo**. La mosca se queda donde está.
 
 Además, en esta versión del juego se puede elegir la dificultad. Estas son las posibles dificultades:
-- **Fácil** 😊-> Tablero 6x6.
+- **__Fácil__** 😊-> Tablero 6x6.
 - **Medio** 🤔-> Tablero 7x7. 2 vidas.
 - **Difícil** 😨-> Tablero 8x8. 2 vidas. 10% de posibilidades de defenderse del golpeo.
 - **Maestro** 👺-> Tablero 10x10. 3 vidas. 15% de posibilidades de defenderse del golpeo.
