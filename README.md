@@ -7,7 +7,7 @@ El juego de la Mosca es un minijuego que consiste en intentar cazar una mosca qu
 - **Falla el golpeo**. La mosca se queda donde está.
 
 Además, en esta versión del juego se puede elegir la dificultad. Estas son las posibles dificultades:
-- **__Fácil__** 😊-> Tablero 6x6.
+- **Fácil** 😊-> Tablero 6x6.
 - **Medio** 🤔-> Tablero 7x7. 2 vidas.
 - **Difícil** 😨-> Tablero 8x8. 2 vidas. 10% de posibilidades de defenderse del golpeo.
 - **Maestro** 👺-> Tablero 10x10. 3 vidas. 15% de posibilidades de defenderse del golpeo.
@@ -17,4 +17,4 @@ Para desbloquear una dificultad se **requiere haber matado a la mosca de la difi
 Cada vez que la mosca consume una vida esta revolotea a una posición aleatoria.
 
 ## IMPORTANTE
-El archivo está un un .cs (C#), pero el lenguaje usado es un **pseudocódigo** orientado a la enseñanza. Leer lenguaje-daw.md para más información.
+El archivo está un un .cs (C#), pero el lenguaje usado es un **pseudocódigo** orientado a la enseñanza. Leer [lenguaje-daw.md](https://github.com/nicolasorteg/Mosca-Bidimensional/blob/main/lenguaje_daw.md) para más información.
