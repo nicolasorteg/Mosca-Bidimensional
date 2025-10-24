@@ -212,12 +212,12 @@ procedure gestionarDificultad(int opcionElegida, ref int victoriasFacil, ref int
     switch (opcionElegida) {
 
         case OPCION_MENU_JUEGO_FACIL: // 1
-            simularPartidaFacil(ref victoriasFacil, ref numeroPartidasFacil, ref intentosTotalesFacil);
+            simularPartida(OPCION_MENU_JUEGO_FACIL, ref victoriasFacil, ref numeroPartidasFacil, ref intentosTotalesFacil);
             break;
 
         case OPCION_MENU_JUEGO_MEDIO: // 2
             if (victoriasFacil >= 1) { // si ha ganado en la difultad anterior
-                simularPartidaMedio(ref victoriasMedio, ref numeroPartidasMedio, ref intentosTotalesMedio);
+                simularPartida(OPCION_MENU_JUEGO_MEDIO, ref victoriasMedio, ref numeroPartidasMedio, ref intentosTotalesMedio);
             } else {
                 writeLine("⛓ Dificultad bloqueada. Necesitas ganar el la dificultad 'Fácil' primero.");
             }
@@ -225,7 +225,7 @@ procedure gestionarDificultad(int opcionElegida, ref int victoriasFacil, ref int
 
         case OPCION_MENU_JUEGO_DIFICIL: // 3
             if (victoriasMedio >= 1) { // si ha ganado en la difultad anterior
-                simularPartidaDificil(ref victoriasDificil, ref numeroPartidasDificil, ref intentosTotalesDificil);
+                simularPartida(OPCION_MENU_JUEGO_DIFICIL, ref victoriasDificil, ref numeroPartidasDificil, ref intentosTotalesDificil);
             } else {
                 writeLine("⛓ Dificultad bloqueada. Necesitas ganar el la dificultad 'Medio' primero.");
             }
@@ -233,7 +233,7 @@ procedure gestionarDificultad(int opcionElegida, ref int victoriasFacil, ref int
 
         case OPCION_MENU_JUEGO_MAESTRO: // 4
             if (victoriasDificil >= 1) { // si ha ganado en la difultad anterior
-                simularPartidaMaestro(ref victoriasMaestro, ref numeroPartidasMaestro, ref intentosTotalesMaestro);
+                simularPartida(OPCION_MENU_JUEGO_MAESTRO, ref victoriasMaestro, ref numeroPartidasMaestro, ref intentosTotalesMaestro);
             } else {
                 writeLine("⛓ Dificultad bloqueada. Necesitas ganar el la dificultad 'Dificil' primero.");
             }
@@ -241,7 +241,7 @@ procedure gestionarDificultad(int opcionElegida, ref int victoriasFacil, ref int
 
         case OPCION_MENU_JUEGO_IMPOSIBLE: // 5
             if (victoriasMaestro >= 1) { // si ha ganado en la difultad anterior
-                simularPartidaImposible(ref victoriasImposible, ref numeroPartidasImposible, ref intentosTotalesImposible);
+                simularPartida(OPCION_MENU_JUEGO_IMPOSIBLE, ref victoriasImposible, ref numeroPartidasImposible, ref intentosTotalesImposible);
             } else {
                 writeLine("⛓ Dificultad bloqueada. Necesitas ganar el la dificultad 'Maestro' primero.");
             }
@@ -310,235 +310,116 @@ procedure mostrarEstadisticas(ref victoriasFacil, ref numeroPartidasFacil, ref i
     writeLine("---------------------------------------------------");
 }
 
+procedure simularPartida(int dificultad, ref int victorias, ref int numeroPartidas, ref int intentosTotales) {
 
-procedure simularPartidaFacil(ref int victoriasFacil, ref int numeroPartidasFacil, ref int intentosTotalesFacil) {
-
-    // creacion del tablero, matriz rellena de 0
-    int [][] panelJuego = int[FILAS_PANEL_FACIL][COLUMNAS_PANEL_FACIL];
-
-    int filaElegida;
-    int columnaElegida;
-    int vidas = VIDAS_FACIL;
+    int filas;
+    int columnas;
+    int vidas;
+    int probProteccion = 0; // por defecto 0 para FACIL y MEDIO
     bool isMoscaMuerta = false;
+    int intentosPartida = 0;
 
-    generarPosicionMosca(panelJuego, FILAS_PANEL_FACIL, COLUMNAS_PANEL_FACIL);
-    
+    switch (dificultad) {
+        case OPCION_MENU_JUEGO_FACIL:
+            filas = FILAS_PANEL_FACIL;
+            columnas = COLUMNAS_PANEL_FACIL;
+            vidas = VIDAS_FACIL;
+            break;
+
+        case OPCION_MENU_JUEGO_MEDIO:
+            filas = FILAS_PANEL_MEDIO;
+            columnas = COLUMNAS_PANEL_MEDIO;
+            vidas = VIDAS_MEDIO;
+            break;
+
+        case OPCION_MENU_JUEGO_DIFICIL:
+            filas = FILAS_PANEL_DIFICIL;
+            columnas = COLUMNAS_PANEL_DIFICIL;
+            vidas = VIDAS_DIFICIL;
+            probProteccion = PROBABILIDAD_PROTECCION_DIFICIL;
+            break;
+
+        case OPCION_MENU_JUEGO_MAESTRO:
+            filas = FILAS_PANEL_MAESTRO;
+            columnas = COLUMNAS_PANEL_MAESTRO;
+            vidas = VIDAS_MAESTRO;
+            probProteccion = PROBABILIDAD_PROTECCION_MAESTRO;
+            break;
+
+        case OPCION_MENU_JUEGO_IMPOSIBLE:
+            filas = FILAS_PANEL_IMPOSIBLE;
+            columnas = COLUMNAS_PANEL_IMPOSIBLE;
+            vidas = VIDAS_IMPOSIBLE;
+            probProteccion = PROBABILIDAD_PROTECCION_IMPOSIBLE;
+            break;
+
+        default:
+            writeLine("❌ Dificultad no reconocida.");
+            return;
+    }
+
+    int [][] panelJuego = int[filas][columnas];
+    generarPosicionMosca(panelJuego, filas, columnas);
+
     do {
+        imprimirTabla(dificultad);
 
-        imprimirTabla(OPCION_MENU_JUEGO_FACIL);
-        
-        filaElegida = leerEntero("Golpeo en la fila: ");
-        columnaElegida = leerEntero("Columna donde golpear: ");
+        int filaElegida = leerEntero("Golpeo en la fila: ");
+        int columnaElegida = leerEntero("Columna donde golpear: ");
 
-        if (((filaElegida <= 0)  || (filaElegida > FILAS_PANEL_FACIL)) || ((columnaElegida <= 0)  || (columnaElegida > COLUMNAS_PANEL_FACIL))) {
-
-            writeLine("❌ Posición no válida. Por favor, introduzca una posición de las disponibles, en este caso el tablero es " + FILAS_PANEL_FACIL + "x" + COLUMNAS_PANEL_FACIL);
-
+        if (filaElegida <= 0 || filaElegida > filas || columnaElegida <= 0 || columnaElegida > columnas) {
+            writeLine("❌ Posición no válida. Tablero: " + filas + "x" + columnas);
         } else {
 
-            comprobarGolpeo(filaElegida,columnaElegida, panelJuego, FILAS_PANEL_FACIL, COLUMNAS_PANEL_FACIL, ref vidas);
-            intentosTotalesFacil += 1;
+            comprobarGolpeo(filaElegida, columnaElegida, panelJuego, filas, columnas, probProteccion, ref vidas);
+            intentosTotales += 1;
+            intentosPartida += 1;
+
+            writeLine("Intentos en esta partida: " + intentosPartida);
 
             if (vidas < 1) {
                 isMoscaMuerta = true;
-                victoriasFacil += 1;
-                writeLine("🎉 ENHORABUENA. Has ganado la partida en dificultad FÁCIL.");
+                victorias += 1;
+                writeLine("🎉 ¡ENHORABUENA! Has ganado la partida en dificultad " + dificultad + ".");
             }
         }
-    } while (!isMoscaMuerta); // repite hasta que la mosca esté muerta
 
-    numeroPartidasFacil += 1;
+    } while (!isMoscaMuerta); // no acaba hasta que la mosca está muerta
+
+    numeroPartidas += 1; // 
 }
 
 
-procedure simularPartidaMedio(ref int victoriasMedio, ref int numeroPartidasMedio, ref int intentosTotalesMedio) {
-    
-    // creacion del tablero, matriz rellena de 0
-    int [][] panelJuego = int[FILAS_PANEL_MEDIO][COLUMNAS_PANEL_MEDIO];
+procedure generarPosicionMosca(int[][] panelJuego, int filaMaxima, int columnaMaxima) {
 
-    int filaElegida;
-    int columnaElegida;
-    int vidas = VIDAS_MEDIO;
-    bool isMoscaMuerta = false;
+    int filaMosca = Math.random(0, filaMaxima - 1);
+    int columnaMosca = Math.random(0, columnaMaxima - 1);
 
-    generarPosicionMosca(panelJuego, FILAS_PANEL_MEDIO, COLUMNAS_PANEL_MEDIO);
-    
-    do {
-        
-        imprimirTabla(OPCION_MENU_JUEGO_MEDIO);
-        
-        filaElegida = leerEntero("Golpeo en la fila: ");
-        columnaElegida = leerEntero("Columna donde golpear: ");
-
-        if (((filaElegida <= 0)  || (filaElegida > FILAS_PANEL_MEDIO)) || ((columnaElegida <= 0)  || (columnaElegida > COLUMNAS_PANEL_MEDIO))) {
-
-            writeLine("❌ Posición no válida. Por favor, introduzca una posición de las disponibles, en este caso el tablero es " + FILAS_PANEL_MEDIO + "x" + COLUMNAS_PANEL_MEDIO);
-
-        } else {
-
-            comprobarGolpeo(filaElegida, columnaElegida, panelJuego, FILAS_PANEL_MEDIO, COLUMNAS_PANEL_MEDIO, ref vidas);
-            intentosTotalesMedio += 1;
-
-            if (vidas < 1) {
-                isMoscaMuerta = true;
-                victoriasMedio += 1;
-                writeLine("🎉 ENHORABUENA. Has ganado la partida en dificultad MEDIO.");
-            }
+    for (int i = 0; i < filaMaxima; i += 1) {
+        for (int j = 0; j < columnaMaxima; j += 1) {
+            
+            panelJuego[i][j] = 0;
         }
-    } while (!isMoscaMuerta); // repite hasta que la mosca esté muerta
-
-    numeroPartidasMedio += 1;
+    }
+    panelJuego[filaMosca][columnaMosca] = 1;
 }
 
-
-procedure simularPartidaDificil(ref int victoriasDificil, ref int numeroPartidasDificil, ref int intentosTotalesDificil) {
-
-    // creacion del tablero, matriz rellena de 0
-    int [][] panelJuego = int[FILAS_PANEL_DIFICIL][COLUMNAS_PANEL_DIFICIL];
-
-    int filaElegida;
-    int columnaElegida;
-    int vidas = VIDAS_DIFICIL;
-    bool isMoscaMuerta = false;
-
-    generarPosicionMosca(panelJuego, FILAS_PANEL_DIFICIL, COLUMNAS_PANEL_DIFICIL);
-    
-    do {
-
-        imprimirTabla(OPCION_MENU_JUEGO_DIFICIL);
-        
-        filaElegida = leerEntero("Golpeo en la fila: ");
-        columnaElegida = leerEntero("Columna donde golpear: ");
-
-        if (((filaElegida <= 0)  || (filaElegida > FILAS_PANEL_DIFICIL)) || ((columnaElegida <= 0)  || (columnaElegida > COLUMNAS_PANEL_DIFICIL))) {
-
-            writeLine("❌ Posición no válida. Por favor, introduzca una posición de las disponibles, en este caso el tablero es " + FILAS_PANEL_DIFICIL + "x" + COLUMNAS_PANEL_DIFICIL);
-
-        } else {
-
-            comprobarGolpeo(filaElegida, columnaElegida, panelJuego, FILAS_PANEL_DIFICIL, COLUMNAS_PANEL_DIFICIL, ref vidas);
-            intentosTotalesDificil += 1;
-
-            int num = Math.random(1, 100); 
-            if (num <= PROBABILIDAD_PROTECCION_DIFICIL) {
-                writeLine("🔮 El aura protectora de la Mosca para el golpeo (" + PROBABILIDAD_PROTECCION_DIFICIL + "% de que pase).");
-            }
-
-            if (vidas < 1) {
-                isMoscaMuerta = true;
-                victoriasDificil += 1;
-                writeLine("🎉 ENHORABUENA. Has ganado la partida en dificultad DIFÍCIL.");
-            }
-        }
-    } while (!isMoscaMuerta); // repite hasta que la mosca esté muerta
-
-    numeroPartidasDificil += 1;
-
-}
-
-
-procedure simularPartidaMaestro(ref int victoriasMaestro, ref int numeroPartidasMaestro, ref int intentosTotalesMaestro) {
-
-    // creacion del tablero, matriz rellena de 0
-    int [][] panelJuego = int[FILAS_PANEL_MAESTRO][COLUMNAS_PANEL_MAESTRO];
-
-    int filaElegida;
-    int columnaElegida;
-    int vidas = VIDAS_MAESTRO;
-    bool isMoscaMuerta = false;
-
-    generarPosicionMosca(panelJuego, FILAS_PANEL_MAESTRO, COLUMNAS_PANEL_MAESTRO);
-    
-    do {
-
-        imprimirTabla(OPCION_MENU_JUEGO_DIFICIL);
-        
-        filaElegida = leerEntero("Golpeo en la fila: ");
-        columnaElegida = leerEntero("Columna donde golpear: ");
-
-        if (((filaElegida <= 0)  || (filaElegida > FILAS_PANEL_MAESTRO)) || ((columnaElegida <= 0)  || (columnaElegida > COLUMNAS_PANEL_MAESTRO))) {
-
-            writeLine("❌ Posición no válida. Por favor, introduzca una posición de las disponibles, en este caso el tablero es " + FILAS_PANEL_MAESTRO + "x" + COLUMNAS_PANEL_MAESTRO);
-
-        } else {
-
-            comprobarGolpeo(filaElegida, columnaElegida, panelJuego, FILAS_PANEL_MAESTRO, COLUMNAS_PANEL_MAESTRO, ref vidas);
-            intentosTotalesMaestro += 1;
-
-            int num = Math.random(1, 100); 
-            if (num <= PROBABILIDAD_PROTECCION_MAESTRO) {
-                writeLine("🔮 El aura protectora de la Mosca para el golpeo (" + PROBABILIDAD_PROTECCION_MAESTRO + "% de que pase).");
-            }
-
-            if (vidas < 1) {
-                isMoscaMuerta = true;
-                victoriasMaestro += 1;
-                writeLine("🎉 ENHORABUENA. Has ganado la partida en dificultad MAESTRO.");
-            }
-        }
-    } while (!isMoscaMuerta); // repite hasta que la mosca esté muerta
-
-    numeroPartidasMaestro += 1;
-}
-
-
-procedure simularPartidaImposible(ref int victoriasImposible, ref int numeroPartidasImposible, ref int intentosTotalesImposible) {
-
-    // creacion del tablero, matriz rellena de 0
-    int [][] panelJuego = int[FILAS_PANEL_IMPOSIBLE][COLUMNAS_PANEL_IMPOSIBLE];
-
-    int filaElegida;
-    int columnaElegida;
-    int vidas = VIDAS_IMPOSIBLE;
-    bool isMoscaMuerta = false;
-
-    generarPosicionMosca(panelJuego, FILAS_PANEL_IMPOSIBLE, COLUMNAS_PANEL_IMPOSIBLE);
-    
-    do {
-
-        imprimirTabla(OPCION_MENU_JUEGO_IMPOSIBLE);
-        
-        filaElegida = leerEntero("Golpeo en la fila: ");
-        columnaElegida = leerEntero("Columna donde golpear: ");
-
-        if (((filaElegida <= 0)  || (filaElegida > FILAS_PANEL_IMPOSIBLE)) || ((columnaElegida <= 0)  || (columnaElegida > COLUMNAS_PANEL_IMPOSIBLE))) {
-
-            writeLine("❌ Posición no válida. Por favor, introduzca una posición de las disponibles, en este caso el tablero es " + FILAS_PANEL_IMPOSIBLE + "x" + COLUMNAS_PANEL_IMPOSIBLE);
-
-        } else {
-
-            comprobarGolpeo(filaElegida, columnaElegida, panelJuego, FILAS_PANEL_IMPOSIBLE, COLUMNAS_PANEL_IMPOSIBLE, ref vidas);
-            intentosTotalesImposible += 1;
-
-            int num = Math.random(1, 100); 
-            if (num <= PROBABILIDAD_PROTECCION_IMPOSIBLE) {
-                writeLine("🔮 El aura protectora de la Mosca para el golpeo (" + PROBABILIDAD_PROTECCION_IMPOSIBLE + "% de que pase).");
-            } else if {
-                        vidas -= 1;
-            }
-
-            if (vidas < 1) {
-                isMoscaMuerta = true;
-                victoriasImposible += 1;
-                writeLine("🎉 ENHORABUENA. Has ganado la partida en dificultad IMPOSIBLE.");
-            }
-        }
-    } while (!isMoscaMuerta); // repite hasta que la mosca esté muerta
-
-    numeroPartidasImposible += 1;
-}
-
-
-/*
-
-*/
-procedure comprobarGolpeo(int filaElegida, int columnaElegida, int[][] panelJuego, int filaMaxima, int columnaMaxima, ref int vidas) {
+procedure comprobarGolpeo(int filaElegida, int columnaElegida, int[][] panelJuego, int filaMaxima, int columnaMaxima, int probProteccion, ref int vidas) {
 
     filaElegida -= 1;
     columnaElegida -= 1;
 
     if (panelJuego[filaElegida][columnaElegida] == 1) {
         writeLine("🟢 GOLPEASTE A LA MOSCA.");
+
+        if (probProteccion > 0) {
+            int num = Math.random(1, 100);
+            if ((num <= probProteccion)) {
+                writeLine("🔮 El aura protectora de la Mosca bloquea el golpe (" + probProteccion + "%).");
+            } else {
+                vidas -= 1;
+            }
+        }
 
     } else if (((filaElegida < filaMaxima - 1) && (panelJuego[filaElegida + 1][columnaElegida] == 1)) ||                                               // ⬆️ comprobacion arriba
                ((filaElegida > 0) && (panelJuego[filaElegida - 1][columnaElegida] == 1)) ||                                                            // ⬇️ comprobacion abajo 
@@ -559,21 +440,74 @@ procedure comprobarGolpeo(int filaElegida, int columnaElegida, int[][] panelJueg
 }
 
 
-procedure generarPosicionMosca(int[][] panelJuego, int filaMaxima, int columnaMaxima) {
+procedure imprimirTabla(int dificultad) {
 
-    int filaMosca = Math.random(0, filaMaxima - 1);
-    int columnaMosca = Math.random(0, columnaMaxima - 1);
+    switch (dificultad) {
+        case OPCION_MENU_JUEGO_FACIL: // 1
 
-    for (int i = 0; i < filaMaxima; i += 1) {
-        for (int j = 0; j < columnaMaxima; j += 1) {
+            writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. FÁCIL --");
+            writeLine("--------------------------------------------");
+            writeLine("-- TABLERO --");
+            writeLine("    1    2    3    4   5    6");
+
+            for (int i = 1; i <= FILAS_PANEL_FACIL; i += 1) {
+                writeLine(i + "  [❔] [❔] [❔] [❔] [❔] [❔]");
+            }
+            break;
+
+        case OPCION_MENU_JUEGO_MEDIO: // 2
             
-            panelJuego[i][j] = 0;
-        }
+            writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. MEDIO --");
+            writeLine("--------------------------------------------");
+            writeLine("-- TABLERO --");
+            writeLine("    1    2    3    4   5    6    7 ");
+
+            for (int i = 1; i <= FILAS_PANEL_MEDIO; i += 1) {
+                writeLine(i + "  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            }
+            break;
+            
+        case OPCION_MENU_JUEGO_DIFICIL: // 3
+            
+            writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. DIFÍCIL --");
+            writeLine("--------------------------------------------");
+            writeLine("-- TABLERO --");
+            writeLine("    1    2    3    4   5    6    7    8 ");
+
+            for (int i = 1; i <= FILAS_PANEL_DIFICIL; i += 1) {
+                writeLine(i + "  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            }
+            break;
+
+        case OPCION_MENU_JUEGO_MAESTRO: // 4
+
+            writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. MAESTRO --");
+            writeLine("--------------------------------------------");
+            writeLine("-- TABLERO --");
+            writeLine("    1    2    3    4   5    6    7    8    9   10");
+
+            for (int i = 1; i <= FILAS_PANEL_MAESTRO; i += 1) {
+                writeLine(i + "  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            }
+            break;
+
+        case OPCION_MENU_JUEGO_IMPOSIBLE: // 5
+            
+             writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. IMPOSIBLE --");
+            writeLine("--------------------------------------------");
+            writeLine("-- TABLERO --");
+            writeLine("    1    2    3    4   5    6    7    8    9   10  11   12   13  14   15 ");
+
+            for (int i = 1; i <= FILAS_PANEL_IMPOSIBLE; i += 1) {
+                writeLine(i + "  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            }
+            break;
+
+        default:
+            writeLine("❌Dificultad no reconocida.");
+            break;
     }
-    panelJuego[filaMosca][columnaMosca] = 1;
 }
-
-
 
 /*
 Se encarga de verificar que un valor pasado por teclado sea un número entero. 
@@ -596,100 +530,4 @@ function int leerEntero(string message) {
     } while (!isFormatoCorrecto); // se repite hasta que se introduzca un número
 
     return valorLeido; // devuelve el valor leido, no lo hace hasta que sea valido
-}
-
-
-procedure imprimirTabla(int dificultad) {
-
-    switch (dificultad) {
-        case OPCION_MENU_JUEGO_FACIL: // 1
-
-            writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. FÁCIL --");
-            writeLine("--------------------------------------------");
-            writeLine("-- TABLERO --");
-            writeLine("    1    2    3    4   5    6");
-            writeLine("1  [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("2  [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("3  [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("4  [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("5  [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("6  [❔] [❔] [❔] [❔] [❔] [❔]");
-            break;
-
-        case OPCION_MENU_JUEGO_MEDIO: // 2
-            
-            writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. MEDIO --");
-            writeLine("--------------------------------------------");
-            writeLine("-- TABLERO --");
-            writeLine("    1    2    3    4   5    6    7 ");
-            writeLine("1  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("2  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("3  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("4  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("5  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("6  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("7  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            break;
-            
-        case OPCION_MENU_JUEGO_DIFICIL: // 3
-            
-            writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. DIFÍCIL --");
-            writeLine("--------------------------------------------");
-            writeLine("-- TABLERO --");
-            writeLine("    1    2    3    4   5    6    7    8 ");
-            writeLine("1  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("2  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("3  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("4  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("5  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("6  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("7  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("8  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            break;
-
-        case OPCION_MENU_JUEGO_MAESTRO: // 4
-
-            writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. MAESTRO --");
-            writeLine("--------------------------------------------");
-            writeLine("-- TABLERO --");
-            writeLine("    1    2    3    4   5    6    7    8    9   10");
-            writeLine("1  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("2  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("3  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("4  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("5  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("6  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("7  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("8  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("9  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("10 [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            break;
-
-        case OPCION_MENU_JUEGO_IMPOSIBLE: // 5
-            
-             writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. IMPOSIBLE --");
-            writeLine("--------------------------------------------");
-            writeLine("-- TABLERO --");
-            writeLine("    1    2    3    4   5    6    7    8    9   10  11   12   13  14   15 ");
-            writeLine("1  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("2  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("3  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("4  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("5  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("6  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("7  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("8  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("9  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("10 [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("11 [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("12 [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("13 [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("14 [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            writeLine("15 [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            break;
-
-        default:
-            writeLine("❌Dificultad no reconocida.");
-            break;
-    }
 }
