@@ -113,24 +113,7 @@ procedure seleccionarDificultad() {
 
     int opcionElegida = 0;
 
-    // variables que almacenaran los datos que se mostraran en las estadísticas
-    int victoriasFacil = VICTORIAS_INICIALES;
-    int victoriasMedio = VICTORIAS_INICIALES;
-    int victoriasDificil = VICTORIAS_INICIALES;
-    int victoriasMaestro = VICTORIAS_INICIALES;
-    int victoriasImposible = VICTORIAS_INICIALES;
 
-    int numeroPartidasFacil = PARTIDAS_INICIALES;
-    int numeroPartidasMedio = PARTIDAS_INICIALES;
-    int numeroPartidasDificil = PARTIDAS_INICIALES;
-    int numeroPartidasMaestro = PARTIDAS_INICIALES;
-    int numeroPartidasImposible = PARTIDAS_INICIALES;
-
-    int intentosTotalesFacil = INTENTOS_INICIALES;
-    int intentosTotalesMedio = INTENTOS_INICIALES;
-    int intentosTotalesDificil = INTENTOS_INICIALES;
-    int intentosTotalesMaestro = INTENTOS_INICIALES;
-    int intentosTotalesImposible = INTENTOS_INICIALES;
 
     do {
         // menú
@@ -159,6 +142,25 @@ Se podría hacer dentro de 'seleccionarDificultad', pero como dentro del switch 
 Se le pasa por valor la opción que elige el usuario.
 */
 procedure gestionarDificultad(int opcionElegida) {
+
+    // variables que almacenaran los datos que se mostraran en las estadísticas
+    int victoriasFacil = VICTORIAS_INICIALES;
+    int victoriasMedio = VICTORIAS_INICIALES;
+    int victoriasDificil = VICTORIAS_INICIALES;
+    int victoriasMaestro = VICTORIAS_INICIALES;
+    int victoriasImposible = VICTORIAS_INICIALES;
+
+    int numeroPartidasFacil = PARTIDAS_INICIALES;
+    int numeroPartidasMedio = PARTIDAS_INICIALES;
+    int numeroPartidasDificil = PARTIDAS_INICIALES;
+    int numeroPartidasMaestro = PARTIDAS_INICIALES;
+    int numeroPartidasImposible = PARTIDAS_INICIALES;
+
+    int intentosTotalesFacil = INTENTOS_INICIALES;
+    int intentosTotalesMedio = INTENTOS_INICIALES;
+    int intentosTotalesDificil = INTENTOS_INICIALES;
+    int intentosTotalesMaestro = INTENTOS_INICIALES;
+    int intentosTotalesImposible = INTENTOS_INICIALES;
 
     // se llama a la respectiva funcion que simula cada dificultad. se le pasa por ref los datos para poder modificarlos y actualizar las stats
     // para desbloquear una dificultad se requiere al menos 1 win en las anteriores, para ello se usan los 'if' que no permiten la simulacion si no se cumple esto
@@ -226,7 +228,91 @@ procedure simularPartidaFacil(ref int victoriasFacil, ref int numeroPartidasFaci
     // creacion del tablero, matriz rellena de 0
     int [][] panelJuego = int[FILAS_PANEL_FACIL][COLUMNAS_PANEL_FACIL];
 
+    int filaElegida;
+    int columnaElegida;
 
+    int vidas = VIDAS_FACIL;
+
+    bool isMoscaMuerta = false;
+
+    generarPosicionMosca(panelJuego, FILAS_PANEL_FACIL, COLUMNAS_PANEL_FACIL);
+    
+    do {
+        writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. FÁCIL --");
+        writeLine("--------------------------------------------");
+        writeLine("-- TABLERO --");
+        writeLine("    1    2    3    4   5    6");
+        writeLine("1  [❔] [❔] [❔] [❔] [❔] [❔]");
+        writeLine("2  [❔] [❔] [❔] [❔] [❔] [❔]");
+        writeLine("3  [❔] [❔] [❔] [❔] [❔] [❔]");
+        writeLine("4  [❔] [❔] [❔] [❔] [❔] [❔]");
+        writeLine("5  [❔] [❔] [❔] [❔] [❔] [❔]");
+        writeLine("6  [❔] [❔] [❔] [❔] [❔] [❔]");
+        
+        filaElegida = leerEntero("Golpeo en la fila: ");
+        columnaElegida = leerEntero("Columna donde golpear: ");
+
+        if (((filaElegida <= 0)  || (filaElegida > FILAS_PANEL_FACIL)) || ((columnaElegida <= 0)  || (columnaElegida > COLUMNAS_PANEL_FACIL))) {
+
+            writeLine("❌ Posición no válida. Por favor, introduzca una posición de las disponibles, en este caso el tablero es " + FILAS_PANEL_FACIL + "x" + COLUMNAS_PANEL_FACIL);
+
+        } else {
+
+            comprobarGolpeo(filaElegida,columnaElegida, panelJuego, FILAS_PANEL_FACIL, COLUMNAS_PANEL_FACIL, ref vidas);
+            intentosTotalesFacil += 1;
+
+            if (vidas < 1) {
+                isMoscaMuerta = true;
+                victoriasFacil += 1;
+                writeLine("🎉 ENHORABUENA. Has ganado la partida en dificultad FÁCIL.");
+            }
+        }
+    } while (!isMoscaMuerta); // repite hasta que la mosca esté muerta
+
+    numeroPartidasFacil += 1;
+}
+
+
+procedure comprobarGolpeo(int filaElegida, int columnaElegida, int[][] panelJuego, int filaMaxima, int columnaMaxima, ref int vidas) {
+
+    filaElegida -= 1;
+    columnaElegida -= 1;
+
+    if (panelJuego[filaElegida][columnaElegida] == 1) {
+
+        writeLine("🟢 GOLPEASTE A LA MOSCA. La mosca pierde una vida.");
+        vidas -= 1;
+
+    } else if (((filaElegida < filaMaxima - 1) && (panelJuego[filaElegida + 1][columnaElegida] == 1)) ||                                               // ⬆️ comprobacion arriba
+               ((filaElegida > 0) && (panelJuego[filaElegida - 1][columnaElegida] == 1)) ||                                                            // ⬇️ comprobacion abajo 
+               ((columnaElegida > 0) && (panelJuego[filaElegida][columnaElegida - 1] == 1)) ||                                                         // ⬅️ comprobación izquierda
+               ((columnaElegida < columnaMaxima - 1) && (panelJuego[filaElegida][columnaElegida + 1] == 1)) ||                                         // ➡️ comprobación derecha
+               (((filaElegida < filaMaxima - 1) && (columnaElegida > 0)) && (panelJuego[filaElegida + 1][columnaElegida - 1] == 1)) ||                 // ↖️ comprobación abajo izquierda
+               (((filaElegida < filaMaxima - 1) && (columnaElegida < columnaMaxima - 1)) && (panelJuego[filaElegida + 1][columnaElegida + 1] == 1)) || // ↗️ comprobación abajo derecha
+               (((filaElegida > 0) && (columnaElegida > 0)) && (panelJuego[filaElegida - 1][columnaElegida - 1] == 1)) ||                              // ↙️ comprobación arriba izquierda
+               (((filaElegida > 0) && (columnaElegida < columnaMaxima - 1)) && (panelJuego[filaElegida - 1][columnaElegida + 1] == 1))) {              // ↘️ comprobación arriba derecha
+
+        generarPosicionMosca(panelJuego, filaMaxima, columnaMaxima);
+        writeLine("🟡 CASI. La mosca revolotea a una posición aleatoria.");
+
+    } else {
+        
+        writeLine("🔴 FALLO. No has golpeado cerca de la mosca, continúa en su posición.");
+    }                                                                          
+}
+
+procedure generarPosicionMosca(int[][] panelJuego, int filaMaxima, int columnaMaxima) {
+
+    int filaMosca = Math.random(0, filaMaxima - 1);
+    int columnaMosca = Math.random(0, columnaMaxima - 1);
+
+    for (int i = 0; i < filaMaxima; i += 1) {
+        for (int j = 0; j < columnaMaxima; j += 1) {
+            
+            panelJuego[i][j] = 0;
+        }
+    }
+    panelJuego[filaMosca][columnaMosca] = 1;
 }
 
 procedure simularPartidaMedio(ref int victoriasMedio, ref int numeroPartidasMedio, ref int intentosTotalesMedio) {
@@ -234,13 +320,15 @@ procedure simularPartidaMedio(ref int victoriasMedio, ref int numeroPartidasMedi
     // creacion del tablero, matriz rellena de 0
     int [][] panelJuego = int[FILAS_PANEL_MEDIO][COLUMNAS_PANEL_MEDIO];
 
+    generarPosicionMosca(panelJuego, FILAS_PANEL_MEDIO, COLUMNAS_PANEL_MEDIO);
+
 
 }
 
 procedure simularPartidaDificil(ref int victoriasDificil, ref int numeroPartidasDificil, ref int intentosTotalesDificil) {
 
     // creacion del tablero, matriz rellena de 0
-    int [][] panelJuego = int[FILAS_PANEL_DIFICIL][COLUMNAS_PANEL_d];
+    int [][] panelJuego = int[FILAS_PANEL_DIFICIL][COLUMNAS_PANEL_DIFICIL];
 
 
 }
@@ -253,7 +341,7 @@ procedure simularPartidaMaestro(ref int victoriasMaestro, ref int numeroPartidas
 
 }
 
-procedure simularPartidaFacil(ref int victoriasFacil, ref int numeroPartidasFacil, ref int intentosTotalesFacil) {
+procedure simularPartidaImposible(ref int victoriasImposible, ref int numeroPartidasImposible, ref int intentosTotalesImposible) {
 
     // creacion del tablero, matriz rellena de 0
     int [][] panelJuego = int[FILAS_PANEL_IMPOSIBLE][COLUMNAS_PANEL_IMPOSIBLE];
