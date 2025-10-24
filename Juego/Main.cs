@@ -324,16 +324,8 @@ procedure simularPartidaFacil(ref int victoriasFacil, ref int numeroPartidasFaci
     generarPosicionMosca(panelJuego, FILAS_PANEL_FACIL, COLUMNAS_PANEL_FACIL);
     
     do {
-        writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. FÁCIL --");
-        writeLine("--------------------------------------------");
-        writeLine("-- TABLERO --");
-        writeLine("    1    2    3    4   5    6");
-        writeLine("1  [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("2  [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("3  [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("4  [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("5  [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("6  [❔] [❔] [❔] [❔] [❔] [❔]");
+
+        imprimirTabla(OPCION_MENU_JUEGO_FACIL);
         
         filaElegida = leerEntero("Golpeo en la fila: ");
         columnaElegida = leerEntero("Columna donde golpear: ");
@@ -372,17 +364,8 @@ procedure simularPartidaMedio(ref int victoriasMedio, ref int numeroPartidasMedi
     generarPosicionMosca(panelJuego, FILAS_PANEL_MEDIO, COLUMNAS_PANEL_MEDIO);
     
     do {
-        writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. MEDIO --");
-        writeLine("--------------------------------------------");
-        writeLine("-- TABLERO --");
-        writeLine("    1    2    3    4   5    6    7 ");
-        writeLine("1  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("2  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("3  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("4  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("5  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("6  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("7  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+        
+        imprimirTabla(OPCION_MENU_JUEGO_MEDIO);
         
         filaElegida = leerEntero("Golpeo en la fila: ");
         columnaElegida = leerEntero("Columna donde golpear: ");
@@ -421,18 +404,8 @@ procedure simularPartidaDificil(ref int victoriasDificil, ref int numeroPartidas
     generarPosicionMosca(panelJuego, FILAS_PANEL_DIFICIL, COLUMNAS_PANEL_DIFICIL);
     
     do {
-        writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. DIFÍCIL --");
-        writeLine("--------------------------------------------");
-        writeLine("-- TABLERO --");
-        writeLine("    1    2    3    4   5    6    7    8 ");
-        writeLine("1  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("2  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("3  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("4  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("5  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("6  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("7  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("8  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+
+        imprimirTabla(OPCION_MENU_JUEGO_DIFICIL);
         
         filaElegida = leerEntero("Golpeo en la fila: ");
         columnaElegida = leerEntero("Columna donde golpear: ");
@@ -477,20 +450,8 @@ procedure simularPartidaMaestro(ref int victoriasMaestro, ref int numeroPartidas
     generarPosicionMosca(panelJuego, FILAS_PANEL_MAESTRO, COLUMNAS_PANEL_MAESTRO);
     
     do {
-        writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. MAESTRO --");
-        writeLine("--------------------------------------------");
-        writeLine("-- TABLERO --");
-        writeLine("    1    2    3    4   5    6    7    8    9   10");
-        writeLine("1  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("2  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("3  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("4  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("5  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("6  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("7  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("8  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("9  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("10 [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+
+        imprimirTabla(OPCION_MENU_JUEGO_DIFICIL);
         
         filaElegida = leerEntero("Golpeo en la fila: ");
         columnaElegida = leerEntero("Columna donde golpear: ");
@@ -534,25 +495,8 @@ procedure simularPartidaImposible(ref int victoriasImposible, ref int numeroPart
     generarPosicionMosca(panelJuego, FILAS_PANEL_IMPOSIBLE, COLUMNAS_PANEL_IMPOSIBLE);
     
     do {
-        writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. IMPOSIBLE --");
-        writeLine("--------------------------------------------");
-        writeLine("-- TABLERO --");
-        writeLine("    1    2    3    4   5    6    7    8    9   10  11   12   13  14   15 ");
-        writeLine("1  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("2  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("3  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("4  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("5  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("6  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("7  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("8  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("9  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("10 [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("11 [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("12 [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("13 [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("14 [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-        writeLine("15 [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+
+        imprimirTabla(OPCION_MENU_JUEGO_IMPOSIBLE);
         
         filaElegida = leerEntero("Golpeo en la fila: ");
         columnaElegida = leerEntero("Columna donde golpear: ");
@@ -569,6 +513,8 @@ procedure simularPartidaImposible(ref int victoriasImposible, ref int numeroPart
             int num = Math.random(1, 100); 
             if (num <= PROBABILIDAD_PROTECCION_IMPOSIBLE) {
                 writeLine("🔮 El aura protectora de la Mosca para el golpeo (" + PROBABILIDAD_PROTECCION_IMPOSIBLE + "% de que pase).");
+            } else if {
+                        vidas -= 1;
             }
 
             if (vidas < 1) {
@@ -583,7 +529,9 @@ procedure simularPartidaImposible(ref int victoriasImposible, ref int numeroPart
 }
 
 
+/*
 
+*/
 procedure comprobarGolpeo(int filaElegida, int columnaElegida, int[][] panelJuego, int filaMaxima, int columnaMaxima, ref int vidas) {
 
     filaElegida -= 1;
@@ -591,7 +539,6 @@ procedure comprobarGolpeo(int filaElegida, int columnaElegida, int[][] panelJueg
 
     if (panelJuego[filaElegida][columnaElegida] == 1) {
         writeLine("🟢 GOLPEASTE A LA MOSCA.");
-        vidas -= 1;
 
     } else if (((filaElegida < filaMaxima - 1) && (panelJuego[filaElegida + 1][columnaElegida] == 1)) ||                                               // ⬆️ comprobacion arriba
                ((filaElegida > 0) && (panelJuego[filaElegida - 1][columnaElegida] == 1)) ||                                                            // ⬇️ comprobacion abajo 
@@ -651,3 +598,98 @@ function int leerEntero(string message) {
     return valorLeido; // devuelve el valor leido, no lo hace hasta que sea valido
 }
 
+
+procedure imprimirTabla(int dificultad) {
+
+    switch (dificultad) {
+        case OPCION_MENU_JUEGO_FACIL: // 1
+
+            writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. FÁCIL --");
+            writeLine("--------------------------------------------");
+            writeLine("-- TABLERO --");
+            writeLine("    1    2    3    4   5    6");
+            writeLine("1  [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("2  [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("3  [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("4  [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("5  [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("6  [❔] [❔] [❔] [❔] [❔] [❔]");
+            break;
+
+        case OPCION_MENU_JUEGO_MEDIO: // 2
+            
+            writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. MEDIO --");
+            writeLine("--------------------------------------------");
+            writeLine("-- TABLERO --");
+            writeLine("    1    2    3    4   5    6    7 ");
+            writeLine("1  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("2  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("3  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("4  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("5  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("6  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("7  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            break;
+            
+        case OPCION_MENU_JUEGO_DIFICIL: // 3
+            
+            writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. DIFÍCIL --");
+            writeLine("--------------------------------------------");
+            writeLine("-- TABLERO --");
+            writeLine("    1    2    3    4   5    6    7    8 ");
+            writeLine("1  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("2  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("3  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("4  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("5  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("6  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("7  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("8  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            break;
+
+        case OPCION_MENU_JUEGO_MAESTRO: // 4
+
+            writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. MAESTRO --");
+            writeLine("--------------------------------------------");
+            writeLine("-- TABLERO --");
+            writeLine("    1    2    3    4   5    6    7    8    9   10");
+            writeLine("1  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("2  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("3  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("4  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("5  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("6  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("7  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("8  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("9  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("10 [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            break;
+
+        case OPCION_MENU_JUEGO_IMPOSIBLE: // 5
+            
+             writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. IMPOSIBLE --");
+            writeLine("--------------------------------------------");
+            writeLine("-- TABLERO --");
+            writeLine("    1    2    3    4   5    6    7    8    9   10  11   12   13  14   15 ");
+            writeLine("1  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("2  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("3  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("4  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("5  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("6  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("7  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("8  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("9  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("10 [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("11 [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("12 [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("13 [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("14 [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            writeLine("15 [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
+            break;
+
+        default:
+            writeLine("❌Dificultad no reconocida.");
+            break;
+    }
+}
