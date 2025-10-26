@@ -54,6 +54,9 @@ const int VICTORIAS_INICIALES = 0;
 const int PARTIDAS_INICIALES = 0;
 const int INTENTOS_INICIALES = 0;
 
+// constante para control de impresion del panel
+const bool IS_MATRIZ_VACIA = true;
+
 /*
 Función Main. Es por donde se empieza a ejecutar el programa y se encarga de dar la bienvenida.
 Después de la bienvenida comienza la simulación, empezando por el menú principal del juego.
@@ -326,21 +329,26 @@ procedure simularPartida(int dificultad, ref int victorias, ref int numeroPartid
     int vidas;
     int probProteccion = 0; // por defecto 0 para FACIL y MEDIO
 
+    int filaElegida;
+    int columnaElegida;
+
     bool isMoscaMuerta = false;
     int intentosPartida = 0; // almacena los golpeos de la partida actual
 
     int[][] panelJuego = configurarPartida(dificultad, ref filas, ref columnas, ref vidas, ref probProteccion);
 
     do {
-        imprimirTabla(dificultad); // no dinámica
+
+        writeLine("--- TABLERO ---");
+        imprimirTabla(panelJuego, IS_MATRIZ_VACIA);
+        writeLine("");
 
         // solicitamos la posición de golpeo
-        int filaElegida = leerEntero("Golpeo en la fila: "); 
-        int columnaElegida = leerEntero("Columna donde golpear: ");
+        string posicionElegida = validarPosicion("Posición donde golpear (Fila:Columna): ", ref filaElegida, ref columnaElegida, filas, columnas); 
 
         // condicional para verificar que la posicion es valida
         if ((filaElegida <= 0) || (filaElegida > filas) || (columnaElegida <= 0) || (columnaElegida > columnas)) { 
-            writeLine("❌ Posición no válida. Tablero: " + filas + "x" + columnas);
+            writeLine("❌ " + posicionElegida + " no es válida. Tablero: " + filas + "x" + columnas);
         } else {
 
             // se comprueba que hay donde se ha golpeado
@@ -355,6 +363,8 @@ procedure simularPartida(int dificultad, ref int victorias, ref int numeroPartid
                 isMoscaMuerta = true;
                 victorias += 1;
                 writeLine("🎉 ¡ENHORABUENA! Has ganado la partida en dificultad " + dificultad + ".");
+                writeLine("-- TABLERO FINAL --")
+                imprimirTabla(panelJuego, !IS_MATRIZ_VACIA);
             }
         }
 
@@ -434,72 +444,30 @@ procedure generarPosicionMosca(int[][] panelJuego, int filaMaxima, int columnaMa
     panelJuego[filaMosca][columnaMosca] = 1;
 }
 
-procedure imprimirTabla(int dificultad) {
+procedure imprimirTabla(int[][] panelJuego, bool vacio) {
 
-    switch (dificultad) {
-        case OPCION_MENU_JUEGO_FACIL: // 1
+    if (vacio) {
 
-            writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. FÁCIL --");
-            writeLine("--------------------------------------------");
-            writeLine("-- TABLERO --");
-            writeLine("    1    2    3    4   5    6");
+        for (int i = 0; i < panelJuego.Length; i += 1) {
+            for (int j = 0; j < panelJuego[i].Length; j += 1) {
 
-            for (int i = 1; i <= FILAS_PANEL_FACIL; i += 1) {
-                writeLine(i + "  [❔] [❔] [❔] [❔] [❔] [❔]");
-            }
-            break;
+                write("[❓]")
+            } 
+            writeLine("");  
+        }
+    } else {
 
-        case OPCION_MENU_JUEGO_MEDIO: // 2
-            
-            writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. MEDIO --");
-            writeLine("--------------------------------------------");
-            writeLine("-- TABLERO --");
-            writeLine("    1    2    3    4   5    6    7 ");
+        for (int i = 0; i < panelJuego.Length; i += 1) {
+            for (int j = 0; j < panelJuego[i].Length; j += 1) {
 
-            for (int i = 1; i <= FILAS_PANEL_MEDIO; i += 1) {
-                writeLine(i + "  [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            }
-            break;
-            
-        case OPCION_MENU_JUEGO_DIFICIL: // 3
-            
-            writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. DIFÍCIL --");
-            writeLine("--------------------------------------------");
-            writeLine("-- TABLERO --");
-            writeLine("    1    2    3    4   5    6    7    8 ");
-
-            for (int i = 1; i <= FILAS_PANEL_DIFICIL; i += 1) {
-                writeLine(i + "  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            }
-            break;
-
-        case OPCION_MENU_JUEGO_MAESTRO: // 4
-
-            writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. MAESTRO --");
-            writeLine("--------------------------------------------");
-            writeLine("-- TABLERO --");
-            writeLine("    1    2    3    4   5    6    7    8    9   10");
-
-            for (int i = 1; i <= FILAS_PANEL_MAESTRO; i += 1) {
-                writeLine(i + "  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            }
-            break;
-
-        case OPCION_MENU_JUEGO_IMPOSIBLE: // 5
-            
-             writeLine("-- BIENVENIDO AL JUEGO DE LA MOSCA. IMPOSIBLE --");
-            writeLine("--------------------------------------------");
-            writeLine("-- TABLERO --");
-            writeLine("    1    2    3    4   5    6    7    8    9   10  11   12   13  14   15 ");
-
-            for (int i = 1; i <= FILAS_PANEL_IMPOSIBLE; i += 1) {
-                writeLine(i + "  [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔] [❔]");
-            }
-            break;
-
-        default:
-            writeLine("❌Dificultad no reconocida.");
-            break;
+                if ((panelJuego[i][j] == 1)){
+                    write("[🦟]");
+                } else {
+                    write("[ ]");
+                }
+            } 
+            writeLine("");  
+        }
     }
 }
 
@@ -574,4 +542,26 @@ function int leerEntero(string message) {
     } while (!isFormatoCorrecto); // se repite hasta que se introduzca un número
 
     return valorLeido; // devuelve el valor leido, no lo hace hasta que sea valido
+}
+
+function string validarPosicion(string message, ref int filaElegida, ref int columnaElegida, int filas, int columnas) {
+
+    bool isOk = false;
+    var patron = @"^\d{1,2}:\d{1,2}$";
+
+    do {
+        writeLine(message);
+        var input = readLine();
+
+        isOk = patron.IsMatch(input);
+
+        if (isOk) {
+            validarFila(input, ref filaElegida, filas);
+            validarColumna(input, ref columnaElegida, columnas);
+        } else {
+            writeLine("❌ Formato introducido erróne. Introduzca Fila:Columna.");
+        }
+    } while (!isOk);
+
+
 }
