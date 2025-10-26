@@ -344,8 +344,8 @@ procedure simularPartida(int dificultad, ref int victorias, ref int numeroPartid
         writeLine("");
 
         // solicitamos la posición de golpeo
-        string posicionElegida = validarPosicion("Posición donde golpear (Fila:Columna): ", ref filaElegida, ref columnaElegida, filas, columnas); 
-
+        validarPosicion("Posición donde golpear (Fila:Columna): ", ref filaElegida, ref columnaElegida, filas, columnas); 
+        
         // condicional para verificar que la posicion es valida
         if ((filaElegida <= 0) || (filaElegida > filas) || (columnaElegida <= 0) || (columnaElegida > columnas)) { 
             writeLine("❌ " + posicionElegida + " no es válida. Tablero: " + filas + "x" + columnas);
@@ -544,23 +544,54 @@ function int leerEntero(string message) {
     return valorLeido; // devuelve el valor leido, no lo hace hasta que sea valido
 }
 
-function string validarPosicion(string message, ref int filaElegida, ref int columnaElegida, int filas, int columnas) {
+procedure validarPosicion(string message, ref int filaElegida, ref int columnaElegida, int filas, int columnas) {
 
     bool isOk = false;
     var patron = @"^\d{1,2}:\d{1,2}$";
+    var regex = Regex(patron)
 
     do {
         writeLine(message);
         var input = readLine();
 
-        isOk = patron.IsMatch(input);
+        isOk = regex.IsMatch(input);
 
         if (isOk) {
-            
+
+            string[] partes = input.Split(":"); // devuelve un arrays de strings
+
+            bool isFilaInRange = comprobarFila(partes, filas, ref filaElegida);
+            bool isColumnaInRange = comprobarColumna(partes, columnas, ref columnaElegida);
+
+            if((!isFilaInRange) || (!isColumnaInRange)) {
+                writeLine("❌ Posición fuera del tablero.");
+                isOk = false;
+            }
+
         } else {
             writeLine("❌ Formato introducido erróneo. Introduzca Fila:Columna.");
         }
     } while (!isOk);
+}
 
+function bool comprobarFila(string[] partes, int filas, ref int filaElegida) {
 
+    int fila = (int)partes[0];
+
+    if ((fila > 0) && (fila <= filas)) {
+        filaElegida = fila;
+        return true;
+    } 
+    return false;
+}
+
+function bool comprobarColumna(string[] partes, int columnas, ref int columnaElegida) {
+
+    int columna = (int)partes[1];
+
+    if ((columna > 0) && (columna <= columnas)) {
+        columnaElegida = columna;
+        return true;
+    } 
+    return false;
 }
