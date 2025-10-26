@@ -556,10 +556,9 @@ function string validarPosicion(string message, ref int filaElegida, ref int col
         isOk = patron.IsMatch(input);
 
         if (isOk) {
-            validarFila(input, ref filaElegida, filas);
-            validarColumna(input, ref columnaElegida, columnas);
+            
         } else {
-            writeLine("❌ Formato introducido erróne. Introduzca Fila:Columna.");
+            writeLine("❌ Formato introducido erróneo. Introduzca Fila:Columna.");
         }
     } while (!isOk);
 
